@@ -1,4 +1,4 @@
-const issues = [
+const initialIssues = [
     {
         id: 1,
         status: 'New',
@@ -18,6 +18,13 @@ const issues = [
         title: 'Missing bottom border on panel',
     },
 ];
+
+const sampleIssues = {
+    status: 'New',
+    owner: 'Pieta',
+    title: 'Completion date should be optional',
+}
+
 
 class IssueFilter extends React.Component {
     render() {
@@ -60,7 +67,7 @@ class IssueRow extends React.Component {
 
 class IssueTable extends React.Component {
     render() {
-        const issueRows = issues.map(
+        const issueRows = this.props.issues.map(
             issue => <IssueRow key={issue.id} issue={issue} />
         )
         return (
@@ -85,23 +92,50 @@ class IssueTable extends React.Component {
 }
 
 class IssueAdd extends React.Component {
+    constructor() {
+        super();
+        setTimeout(() => {
+            this.props.createIssue(sampleIssues);
+        }, 2000);
+    }
     render() {
         return (
-            <div> This is a Place holder for Issue Add </div>
-        )
+            <div>This is a placeholder for a form to add an issue.</div>
+        );
     }
 }
 
 class IssueList extends React.Component {
+    constructor() {
+        super();
+        this.state = { issues: [] };
+        this.createIssue = this.createIssue.bind(this);
+    }
+    componentDidMount() {
+        this.loadData();
+    }
+    loadData() {
+        setTimeout(() => {
+            this.setState({ issues: initialIssues });
+        }, 500);
+    }
+    createIssue(issue) {
+        issue.id = this.state.issues.length + 1;
+        issue.created = new Date();
+        const newIssueList = this.state.issues.slice();
+        newIssueList.push(issue);
+        this.setState({ issues: newIssueList });
+    }
+
     render() {
         return (
             <React.Fragment>
                 <h1>Issue Tracker</h1>
                 <IssueFilter />
                 <hr />
-                <IssueTable />
+                <IssueTable issues={this.state.issues} />
                 <hr />
-                <IssueAdd />
+                <IssueAdd createIssue={this.createIssue} />
             </React.Fragment>
         )
     }
