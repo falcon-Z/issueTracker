@@ -1,6 +1,7 @@
 scalar GraphQLDate
 
 type issue {
+    _id: ID!
     id: Int!
     title: String!
     status: String!
