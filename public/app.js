@@ -154,7 +154,7 @@ var IssueList = /*#__PURE__*/function (_React$Component3) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                query = "query {\n      issueList {\n        id title status owner\n        created effort due\n      }\n    }";
+                query = "query {\n      issueList {\n        id \n        title \n        status \n        owner\n        created \n        effort \n        due\n      }\n    }";
                 _context.next = 3;
                 return fetch('/graphql', {
                   method: 'POST',

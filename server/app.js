@@ -7,29 +7,15 @@ const { MongoClient } = require('mongodb');
 
 const url = 'mongodb://localhost/issuetracker';
 
+// Atlas URL  - replace UUU with user, PPP with password, XXX with hostname
+// const url = 'mongodb+srv://UUU:PPP@cluster0-XXX.mongodb.net/issuetracker?retryWrites=true';
+
+// mLab URL - replace UUU with user, PPP with password, XXX with hostname
+// const url = 'mongodb://UUU:PPP@XXX.mlab.com:33533/issuetracker';
+
 let db;
 
 let aboutMessage = "Issue Tracker API v1.0";
-
-const issuesDB = [{
-        id: 1,
-        status: 'New',
-        owner: 'Ravan',
-        effort: 5,
-        created: new Date('2019-01-15'),
-        due: undefined,
-        title: 'Error in console when clicking Add',
-    },
-    {
-        id: 2,
-        status: 'Assigned',
-        owner: 'Eddie',
-        effort: 14,
-        created: new Date('2019-01-16'),
-        due: new Date('2019-02-01'),
-        title: 'Missing bottom border on panel',
-    },
-];
 
 const GraphQLDate = new GraphQLScalarType({
     name: 'GraphQLDate',
@@ -70,6 +56,17 @@ async function issueList() {
     return issues;
 }
 
+async function getNextSequence(name) {
+    const result = await db.collection('counters').findOneAndUpdate({
+        _id: name
+    }, {
+        $inc: {
+            current: 1
+        }
+    }, { returnOriginal: false }, );
+    return result.value.current;
+}
+
 function issueValidate(issue) {
     const errors = [];
     if (issue.title.length < 3) {
@@ -83,12 +80,15 @@ function issueValidate(issue) {
     }
 }
 
-function issueAdd(_, { issue }) {
+async function issueAdd(_, { issue }) {
     issueValidate(issue);
     issue.created = new Date();
-    issue.id = issuesDB.length + 1;
-    issuesDB.push(issue);
-    return issue;
+    issue.id = await getNextSequence('issues');
+
+    const result = await db.collection('issues').insertOne(issue);
+    const savedIssue = await db.collection('issues')
+        .findOne({ _id: result.insertedId });
+    return savedIssue;
 }
 
 async function connectToDb() {

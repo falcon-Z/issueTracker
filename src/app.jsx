@@ -97,8 +97,13 @@ class IssueList extends React.Component {
   async loadData() {
     const query = `query {
       issueList {
-        id title status owner
-        created effort due
+        id 
+        title 
+        status 
+        owner
+        created 
+        effort 
+        due
       }
     }`;
 
