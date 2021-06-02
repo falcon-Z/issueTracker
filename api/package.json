@@ -4,7 +4,9 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "start": "nodemon -e js,graphql -w . -w .env app.js"
+        "start": "nodemon -e js,graphql -w . -w .env app.js",
+        "lint": "eslint .",
+        "lint:fix": "eslint --fix ."
     },
     "author": "Sai Madhan",
     "license": "ISC",
@@ -16,6 +18,9 @@
         "mongodb": "^3.6.9"
     },
     "devDependencies": {
+        "eslint": "^7.27.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-plugin-import": "^2.23.4",
         "nodemon": "^2.0.7"
     },
     "volta": {
