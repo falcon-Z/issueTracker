@@ -156,7 +156,7 @@ var IssueList = /*#__PURE__*/function (_React$Component3) {
               case 0:
                 query = "query {\n      issueList {\n        id \n        title \n        status \n        owner\n        created \n        effort \n        due\n      }\n    }";
                 _context.next = 3;
-                return fetch('/graphql', {
+                return fetch('http://localhost:3000/graphql', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -203,7 +203,7 @@ var IssueList = /*#__PURE__*/function (_React$Component3) {
               case 0:
                 query = "mutation issueAdd($issue: IssueInputs!) {\n      issueAdd(issue: $issue) {\n        id\n      }\n    }";
                 _context2.next = 3;
-                return fetch('/graphql', {
+                return fetch('http://localhost:3000/graphql', {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'

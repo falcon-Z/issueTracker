@@ -1,12 +1,10 @@
 {
-    "name": "issuetracker",
+    "name": "issuetracker-api",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon -w server -e js,graphql server/app.js",
-        "compile": "babel src --out-dir public",
-        "watch": "babel src --out-dir public --watch --verbose"
+        "start": "nodemon server -e js,graphql app.js"
     },
     "author": "Sai Madhan",
     "license": "ISC",
@@ -17,10 +15,6 @@
         "mongodb": "^3.6.9"
     },
     "devDependencies": {
-        "@babel/cli": "^7.14.3",
-        "@babel/core": "^7.14.3",
-        "@babel/preset-env": "^7.14.2",
-        "@babel/preset-react": "^7.13.13",
         "nodemon": "^2.0.7"
     },
     "volta": {
