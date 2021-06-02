@@ -4,14 +4,16 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon -w server.js server.js",
+        "start": "nodemon -w server.js -w .env server.js",
         "compile": "babel src --out-dir public",
         "watch": "babel src --out-dir public --watch --verbose"
     },
     "author": "Sai Madhan",
     "license": "ISC",
     "dependencies": {
-        "express": "^4.17.1"
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "http-proxy-middleware": "^2.0.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.14.3",

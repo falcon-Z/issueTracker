@@ -5,13 +5,12 @@ const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 const { MongoClient } = require('mongodb');
 
-const url = 'mongodb://localhost/issuetracker';
+require('dotenv').config();
 
-// Atlas URL  - replace UUU with user, PPP with password, XXX with hostname
-// const url = 'mongodb+srv://UUU:PPP@cluster0-XXX.mongodb.net/issuetracker?retryWrites=true';
-
-// mLab URL - replace UUU with user, PPP with password, XXX with hostname
-// const url = 'mongodb://UUU:PPP@XXX.mlab.com:33533/issuetracker';
+const url = process.env.DB_URL || 'mongodb://localhost/issuetracker';
+const host = process.env.API_HOST || 'localhost';
+const port = process.env.API_PORT || '3000';
+const enableCors = (process.env.ENABLE_CORS || 'true') == 'true';
 
 let db;
 
@@ -63,7 +62,7 @@ async function getNextSequence(name) {
         $inc: {
             current: 1
         }
-    }, { returnOriginal: false }, );
+    }, { returnOriginal: false });
     return result.value.current;
 }
 
@@ -92,7 +91,7 @@ async function issueAdd(_, { issue }) {
 }
 
 async function connectToDb() {
-    const client = new MongoClient(url, { useNewUrlParser: true });
+    const client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
     await client.connect();
     console.log('Connected to MongoDB at', url);
     db = client.db();
@@ -109,13 +108,13 @@ const server = new ApolloServer({
 
 const app = express();
 
-server.applyMiddleware({ app, path: '/graphql' });
+server.applyMiddleware({ app, path: '/graphql', cors: enableCors });
 
 (async function() {
     try {
         await connectToDb();
-        app.listen(3000, function() {
-            console.log('API Server Listning on http://localhost:3000');
+        app.listen(port, () => {
+            console.log(`API Server Listning on http://${host}:${port}`);
         });
     } catch (err) {
         console.log('ERROR:', err);

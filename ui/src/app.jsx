@@ -107,7 +107,7 @@ class IssueList extends React.Component {
       }
     }`;
 
-    const response = await fetch('http://localhost:3000/graphql', {
+    const response = await fetch(window.ENV.API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query })
@@ -124,7 +124,7 @@ class IssueList extends React.Component {
       }
     }`;
 
-    const response = await fetch('http://localhost:3000/graphql', {
+    const response = await fetch(window.ENV.API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, variables: { issue } })
